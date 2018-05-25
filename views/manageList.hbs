@@ -1,0 +1,110 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item navbar-right navbar-brand navbar-right">MANAGEMENT</li>
+    <li class="nav-item "><a class="nav-link" href="/admin">Admin Manage Page</a></li>
+    <li class="nav-item  active"><a class="nav-link" href="/manageList">Manage Fundraiser</a></li>
+  </ul>
+</nav>
+
+<style>
+* {box-sizing: border-box}
+
+.load {
+  width: 100%;
+  background-color: #ddd;
+}
+
+.skills {
+  text-align: right;
+  padding-right: 20px;
+  line-height: 15px;
+  color: white;
+}
+</style>
+
+
+<script src="/javascripts/FundraiserABI.js"></script>
+
+
+{{#if delete}}
+<h1>Delted from list view successfully</h1>
+{{/if}}
+
+
+{{!--------------------------------------------------------------------------------}}
+<div>
+    <button onclick="toggle('wait')" class="w3-border-white  w3-round-small w3-left-align w3-button w3-block w3-pale-red w3-bar-item "><div class="w3-opacity w3-wide">WAIT FOR APPROVAL</div></button>
+  <div id="wait"class="w3-row-padding w3-padding-32 w3-hide" style="margin:0 -16px">
+    
+          
+          
+  </div>
+</div>
+{{!--------------------------------------------------------------------------------}}
+<div>
+ <button onclick="toggle('approved')" class="w3-border-white  w3-round-small w3-round-small w3-left-align w3-button w3-block w3-pale-red w3-bar-item "><div class="w3-opacity w3-wide  ">APPROVED</div></button>
+  <div id="approved"class="w3-row-padding w3-padding-32 w3-hide" style="margin:0 -16px">
+    
+          
+          
+  </div>
+</div>
+{{!--------------------------------------------------------------------------------}}
+
+{{!--------------------------------------------------------------------------------}}
+<div>
+  <button onclick="toggle('expired')" class="w3-border-white  w3-round-small w3-round-small w3-left-align w3-button w3-block w3-pale-red w3-bar-item "><div class="w3-opacity w3-wide">OUT OF DATE</div></button>
+  <div id="expired"class="w3-row-padding w3-padding-32 w3-hide" style="margin:0 -16px">
+    
+          
+          
+  </div>
+
+{{!--------------------------------------------------------------------------------}}
+{{#each item}}
+<script>
+  var address ="{{this.address}}";
+  var contract = fundraiserContract.at(address);
+  contract.getInfo(function(error, result) {
+    if (!error) {
+        var owner = result[0];
+        var total = result[1];
+        var goal = result[2];
+        var ratio = (total/goal)*100;
+        var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var start = new Date(result[3]*1000);
+        var end = new Date(result[4]*1000);
+        var isOpen=result[5];
+        var isEarly = result[6];
+        var isWithdraw = result[7];
+        var isActive=result[8];
+        var from=start.getDate()+" "+months[start.getMonth()]+", "+start.getFullYear();
+        var to=end.getDate()+" "+months[end.getMonth()]+", "+end.getFullYear();
+        var fund="<div class=\" w3-third w3-margin-bottom\" style=\"height:300px\">"
+              +"<div class=\"w3-container w3-white w3-border w3-border-pink\">"
+                +"<h3 style=\"height:60px\"><a><b>{{this.title}}</b></a></h3>"
+                +"<p><p class=\"w3-xlarge\">"+total+"<i class=\"w3-small\">of "+goal+" coins goal</i></p></p>"
+                +"<div class=\"progress\"><div id=\"\" class=\"progress-bar progress-bar w3-pink\" role=\"progressbar\" aria-valuenow=\"70\"aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+ratio+"%\">"
+                  +"<span class=\"sr-only\"></span></div>"
+                  +"</div><p class=\"w3-opacity w3-small\" id=\"from\">From: "+from+"</p>"
+                  +"<p class=\"w3-opacity w3-small\" id=\"to\">To: "+to+"</p>"
+                  +"<a href=\"/manage-{{{this._id}}}\" class=\"w3-button w3-black w3-margin-bottom\">Read more</a></div></div>";
+        if(isOpen==false){
+          if(!isWithdraw) $("#wait").append(fund);
+          else $("#expired").append(fund);
+        } 
+        else {    
+            $("#approved").append(fund);        
+        }
+      console.log(result);
+    } else
+      console.log(error);
+  });
+</script>
+
+{{/each}}
+</div>
+    {{!-- "<div class=\"w3-third w3-margin-bottom\"><div class=\"w3-container w3-white\"><h4><a><b>{{this.title}}</b></a></h4><p class=\"w3-large\"></p><div class=\"progress\"><div id=\"\" class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\"aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:%\"><span class=\"sr-only\"></span></div></div><p class=\"w3-opacity w3-small\" id=\"from\">"+start+"</p><p class=\"w3-opacity w3-small\" id=\"to\">"+end+"</p><a href=\"/{{{this._id}}}\" class=\"w3-button w3-black w3-margin-bottom\"></a></div></div>" --}}
+
+
+

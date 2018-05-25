@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-sm bg-danger navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item"><a class="nav-link" href="/">About Us</a></li>
+    <li class="nav-item active "><a class="nav-link" href="/deploy">Start Your Own</a></li>
+    <li class="nav-item"><a class="nav-link" href="/List_fundraiser">Fundraisers</a></li>
+        <li class="nav-item "><a class="nav-link" href="/audit">Coin Sharing and Fundraiser Audit</a></li>
+  </ul>
+</nav>
+<script src="/javascripts/tinymce/tinymce.min.js"></script>
+<script>tinymce.init({    height : "350", selector:'textarea', force_p_newlines : false,force_br_newlines : true,convert_newlines_to_brs : true,remove_linebreaks : true, oninit : "setPlainText", plugins : "paste", entity_encoding: 'raw'});</script>
+<style>
+    .register-form {text-align: left; margin: 5%;margin-top:auto; width: 90%; padding: 5px;}
+</style>
+
+<h1 class="w3-wide w3-center" >Start A New Charity Fundraising</h1>
+{{#if success}}
+        <P class="w3-wide w3-center">Thank You for your request ! We will start it soon</P>
+    {{/if}}
+<div class="register-form">
+    <form action="/submit" method="post">
+     <p>
+    <label>Goal</label>
+    <input class="w3-input" type="text" name="goal" id="goal"></p>
+    <p>
+    <p>
+    <label>Title</label>
+    <input class="w3-input" type="text" name="title" id="title"></p>
+    <p>
+    <label>Description</label>
+    <textarea class="w3-input"  id="content" name="content" ></textarea></p>
+    <p>
+    <label>Poster Link</label>
+    <input class="w3-input"  type="text" name="poster"  id="poster"></p>
+    <p>
+    <label>Starting date</label>
+    <input class="w3-input"  type="date" name="start" id="start"></p>
+    <p>
+    <label>Expired date</label>
+    <input class="w3-input"   type="date" name="end"  id="end"></p>
+    <p>
+    <p>
+    <label>Contract Address</label>
+    <input class="w3-input"  type="text" name="address"  id="address"></p>
+    <input type="submit" class="w3-button w3-right w3-pink w3-round-large" value="Register" id="register">
+
+    <script>document.getElementById("register").style.visibility="hidden";</script>
+    </form>
+    <p>
+    <button type="button" class="w3-button w3-right w3-pink w3-round-large" onclick="deploy()" id="deploy">Deploy</button></p>
+    
+</div>
+<script src="/javascripts/FundraiserABI.js"></script>
+
+
+
