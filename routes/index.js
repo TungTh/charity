@@ -45,19 +45,19 @@ router.get('/manage-:id', function(req, res, next) {
     });
 });
 router.get('/delete-:id', function(req, res, next) {
-    userData.findOneAndUpdate({ _id: req.params.id }, { display: false }).then((docs) => {
-        res.render('manageList', { title: 'Manage Fundraisers', item: docs, delete: true });
+    userData.update({ _id: req.params.id }, { $set: { "display": false } }).then((docs) => {
+        res.render('manageList', { title: 'Manage Fundraisers', item: docs });
     });
 });
 router.get('/address-:address', function(req, res, next) {
     userData.findOne({ address: req.params.address }).then((docs) => {
-        res.render('Fundraiser', { title: 'Fundraiser', item: docs, delete: true });
+        res.render('Fundraiser', { title: 'Fundraiser', item: docs });
     });
 });
 
 router.get('/manageList', function(req, res, next) {
     userData.find({}).then((docs) => {
-        res.render('manageList', { title: 'Manage Fundraisers', item: docs, delete: false });
+        res.render('manageList', { title: 'Manage Fundraisers', item: docs });
     });
 });
 router.get('/admin', function(req, res, next) {

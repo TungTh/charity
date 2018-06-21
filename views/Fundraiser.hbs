@@ -130,7 +130,7 @@ font-family: 'Handlee', cursive;
               else {
                 $("#status").append("<div class=\"w3-button w3-wide w3-dark-grey w3-round-large w3-center\" style=\"width:100%\">EXPIRED</div>");
                     if(!isWithdraw) $("#owner").append("<button class=\"w3-button w3-wide w3-pink w3-round-large w3-center\" style=\"width:100%\"id=\"donate\" onclick=\"withdrawNow()\">WITHDRAW COIN</button>");
-                        else $("#owner").append("<button class=\"w3-button w3-wide w3-pink w3-round-large w3-center\" style=\"width:100%\"id=\"donate\" onclick=\"Closing()\">CLOSING</button>");
+                    else $("#owner").append("<button class=\"w3-button w3-wide w3-pink w3-round-large w3-center\" style=\"width:100%\"id=\"donate\">DONE</button>");
               }
             }
         }
@@ -185,18 +185,6 @@ font-family: 'Handlee', cursive;
     function withdrawNow(){
         contract.ownerWidthdraw(function(error, result) {
            if (!error) {
-               if(result) document.getElementById("noti").innerHTML="Total amount of Happy Coin(s) is now send to your account."
-                else  document.getElementById("noti").innerHTML="You are not the owner of this Fundraiser."
-
-           } else document.getElementById("noti").innerHTML="Failed to make transaction."
-
-            
-       });
-    }
-
-    function Closing(){
-        contract.done(function(error, result) {
-           if (!error) {
                if(result) document.getElementById("noti").innerHTML="Fundraiser closed."
                 else  document.getElementById("noti").innerHTML="You are not the owner of this Fundraiser."
 
@@ -205,6 +193,8 @@ font-family: 'Handlee', cursive;
             
        });
     }
+
+    
 
     function refresh(){
         location.reload();
