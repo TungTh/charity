@@ -1,16 +1,17 @@
 pragma solidity ^0.4.9;
 import "./Fundraiser.sol";
 import "./library/SafeMath.sol";
-import "./IUCoin.sol";
-import "./HappyCoin.sol";
-import "./RewardCoin.sol";
+import "./library/SafeMath.sol";
+import "./FundToken.sol";
+import "./HappyToken.sol";
+import "./RewardToken.sol";
 import "./ERC20_Interface.sol";
 
 contract Admin{
     address[] openedList;
-    IUCoin iu;
-    HappyCoin happy;
-    RewardCoin reward;
+    FundToken FToken;
+    HappyToken HToken;
+    RewardToken RToken;
     address owner;
     event Notification (
         address _address,
@@ -18,11 +19,11 @@ contract Admin{
         
     );
 
-    function Admin(address _iu,address _reward,address _happy ){
+    function Admin(address _fund,address _reward,address _happy ){
         owner=msg.sender;
-        iu = IUCoin(_iu);
-        reward = RewardCoin(_reward);
-        happy=HappyCoin(_happy);
+        FToken=FundToken(_fund);
+        RToken=RewardToken(_reward);
+        HToken=HappyToken(_happy);
     
     }
     modifier _owner(){
@@ -61,7 +62,7 @@ contract Admin{
     function openFundraiser(address _address) _owner public returns (bool ok){
         require(!isIn(_address));
         Fundraiser fundraiser = Fundraiser(_address);
-        fundraiser.open(iu,reward,happy);
+        fundraiser.open(FToken,RToken,HToken);
         openedList.push(_address)-1;
         return true;
     }
@@ -70,15 +71,11 @@ contract Admin{
         return (openedList,owner);
     }
     function investTo (address _to, uint256 _value) _owner public returns (bool ok) {
-        iu.createToken(_to, _value);
+        FToken.investToken(_to, _value);
         return true;
     }
 
 //.......done by Fund Owner..................................................msg.sender = fund owner;
-    function payFundOwner (address _from,uint256 _value) public returns (bool ok) {
-        happy.withdraw(_from,owner, _value);
-        return true;
-    }
-    
+
 
 }

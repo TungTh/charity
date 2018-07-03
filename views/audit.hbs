@@ -12,8 +12,8 @@
 <div>
  <button onclick="toggle('coin')" class="w3-border-white  w3-round-small w3-round-small w3-left-align w3-button w3-block w3-amber w3-bar-item "><div class="w3-opacity w3-wide  ">SHARING COIN</div></button>
       <div class="w3-container w3-content w3-padding-54 w3-hide" style="max-width:800px" id="coin">
-        <h2 class="w3-wide w3-center">IU COIN(S) SHARING </h2>
-        <p class="w3-opacity w3-center"><i>Share your IU coin(s) with others!</i></p>
+        <h2 class="w3-wide w3-center">Fund Token(S) SHARING </h2>
+        <p class="w3-opacity w3-center"><i>Share your Fund Token(s) with others!</i></p>
         <p class="w3-opacity w3-center w3-small" id="noti"></p>
         <div class="w3-row w3-padding-32">
           <label>To Address</label>
@@ -76,7 +76,7 @@
             
        });
 
-        iu.totalSupply(function(error, result) {
+        fund.totalSupply(function(error, result) {
            if (!error) {
             document.getElementById("iu_total").innerHTML=result;
            } 
@@ -94,12 +94,12 @@
   function invest(){
       var amount=$('#amount').val();
       var to=$('#to').val();
-      iu.transfer(to,amount,{gas: '100000'},function(error, result) {
+      fund.transfer(to,amount,{gas: '100000'},function(error, result) {
            if (!error) {
             if(result) document.getElementById("noti").innerHTML="Investment confirmed !";
             else document.getElementById("noti").innerHTML="You have no permission to do this !";
            } 
-            document.getElementById("noti").innerHTML="There is something wrong ! PLease check again your IU Coin balance ( must be greater than 0) and amount ( must be equal or less than your balance) or the destination address ( must not be a contract ). Thank You";
+            document.getElementById("noti").innerHTML="There is something wrong ! PLease check again your Fund Token balance ( must be greater than 0) and amount ( must be equal or less than your balance) or the destination address ( must not be a contract ). Thank You";
 
             
        });
