@@ -1,12 +1,44 @@
-<style>  
-div.new{
-width: 400px;
-height: 100px;
-margin: 0 auto;
-text-overflow: ellipsis;
-}
-</style> 
-<div class="new">
-{{{item}}}  
-</div>
+<script src="/javascripts/FundraiserABI.js"></script>
+<script src="/javascripts/abi-decoder.js"> </script>
+<a ID="demo"></a>
+<script>
+web3.eth.getBlockNumber(function(error, result) {
+           if (!error) {
+             for(var i = 1;i<=result;i++){
+               web3.eth.getBlock(i,function(error, block) {
+                          if (!error) {
+                            transactions=block.transactions
+                            for(var j=0;j<transactions.length;j++){
+                              web3.eth.getTransaction(transactions[j],function(error, transaction) {
+                                  if (!error) {
+                                    if(transaction.to=="0xb5b746deff63a51801fbe4cf769d816832057343") console.log(transaction.hash)
+                                  } else
+                                        console.log(error);
+                              });
+                            }
+                          } else
+                                console.log(error);
+                      });
+             }
+           } else
+                console.log(error);
+       });
+
+</script> 
+{{!-- <script>
+var info = web3.eth.getTransaction("0x45fd28857a4df190922a74dfeae5d6f5534e6045b8d8f9ff48fbd8d6e3baf0cc",function(error, result) {
+           if (!error) {
+             console.log(result);
+           } else
+                console.log(error);
+       });
+
+    
+var testABI =[{ "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "ownerWidthdraw", "outputs": [{ "name": "res", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "total", "outputs": [{ "name": "_total", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "MAX_UINT256", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "withdraw", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "goal", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getInfo", "outputs": [{ "name": "", "type": "address" }, { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" }, { "name": "", "type": "bool" }, { "name": "", "type": "bool" }, { "name": "", "type": "bool" }, { "name": "", "type": "bool" }, { "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_donator", "type": "address" }], "name": "isIn", "outputs": [{ "name": "ok", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "uint256" }], "name": "donator", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "start", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getDonators", "outputs": [{ "name": "list", "type": "address[]" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_donator", "type": "address" }], "name": "getDonationOf", "outputs": [{ "name": "", "type": "address" }, { "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "end", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_value", "type": "uint256" }], "name": "donate", "outputs": [{ "name": "res", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_fund", "type": "address" }, { "name": "_reward", "type": "address" }, { "name": "_happy", "type": "address" }], "name": "open", "outputs": [{ "name": "succes", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "open", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [{ "name": "_name", "type": "string" }, { "name": "_admin", "type": "address" }, { "name": "_goal", "type": "uint256" }, { "name": "_start", "type": "uint256" }, { "name": "_end", "type": "uint256" }], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "_address", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "message", "type": "string" }, { "indexed": false, "name": "total", "type": "uint256" }], "name": "Notification", "type": "event" }];
+abiDecoder.addABI(testABI);
+var testData = "0xf14faf6f0000000000000000000000000000000000000000000000000000000000000078";
+var decodedData = abiDecoder.decodeMethod(testData);
+document.getElementById("demo").innerHTML=JSON.stringify(decodedData, null, '\t');
+</script> --}}
+
 

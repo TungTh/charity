@@ -12,45 +12,43 @@
 .w3-Handlee{
 font-family: 'Handlee', cursive;
 }
-
+#scrolltable { margin-top: 40px; height: 150px; overflow: auto; }
+#scrolltable th div { position: absolute; margin-top: -40px; }
 </style>
-<div class="container" style="margin-top:30px">
+<div class="w3-padding-large" style="margin-top:30px">
+    <P class="w3-wide w3-center" id ="noti"></P>
   <div class="row">
   <div class="col-sm-8">
       <img class="img-fluid" src="{{item.poster}}">
       <h2>The Story</h2>
-      <h4><i><b>{{item.title}}</b></i></h4>
-        <i class="w3-opacity w3-left w3-small w3-wide" id="date"></i><br><br>
+      <h4><i><b id="name"></b></i></h4>
+        <i class="w3-opacity w3-left w3-small w3-wide" id="date"></i><br>
       {{{item.content}}}
       <br>
-      <h2 id="donators">Thank You<button type="button" class="btn btn-default btn-sm w3-right" onclick="refresh()"><span class="glyphicon glyphicon-refresh"></span> Refresh</button></h2>
-      <table class="table">
-        <thead>
-            <tr>
-                <th>Address</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody id="list">
-        </tbody>
+    <i class="w3-opacity w3-left w3-snall" id="address">Fundraiser Address:"{{item.address}}"</i><br><br>
+      <a class=" w3-large w3-wide ">Thank You !  </a><a href="#" onclick="refresh()"><span class="glyphicon glyphicon-refresh"></span></a>
+        <div id="scrolltable">
+    <table class="w3-table w3-striped w3-bordered"id="donators">
+        <tr><th><div>Address</div></th><th><div>Amount</div></th></tr>
+
     </table>
+</div>
     </div>
 
     <div class="col-sm-4 w3-center">
       <h1 id ="total"></h1><div id="goal"class="w3-small"></div>
-      <h5></h5>
-      <p></p><div class="progress">
+      <div class="progress">
         <div id="prgress-bar"class="progress-bar w3-pink" role="progressbar"aria-valuemin="0" aria-valuemax="100" style="width:0%">
                 <span class="sr-only"></span>
         </div>
       </div></p>
-      <p ><input id="amount" type="number"style="height:43px;width:50%"><img  style="height:43px;margin-left:20px" src="/images/iucoin.png"></img></p>
+      <p ><input id="amount" type="number"style="height:43px;width:50%"><A class="w3-wide"><B> FToken(s)</B></A></p>
       {{!-- <button class="w3-button w3-pink w3-round-large" style="width:100%"id="donate" onclick="Donate()">DONATE NOW</button> --}}
       <p id="status"></p>
-      <p class="w3-Handlee">Share your love and get 10 EXP coins as a gift ! (only one time)  </p>
+    <i class="w3-opacity w3-left w3-small" id="fowner"></i><br><br>
       <p id="count"></p>
       <p id="owner"></p>
-      <p id="noti"></p>
+    <p class="w3-Handlee">Share your love and get 10 <b>RTokens</b> as a gift ! (only one time)  </p>
       <ul class="nav nav-pills flex-column">
       <hr class="d-sm-none">
     </div>
@@ -84,11 +82,14 @@ font-family: 'Handlee', cursive;
         var isEarly = result[6];
         var isWithdraw = result[7];
         var isActive=result[8];
+        var name=result[9];
+        document.getElementById("name").innerHTML=name;
+        document.getElementById("fowner").innerHTML="Owner Address:\n"+owner;
         var from=start.getDate()+" "+months[start.getMonth()]+", "+start.getFullYear();
         var to=end.getDate()+" "+months[end.getMonth()]+", "+end.getFullYear();
         document.getElementById("date").innerHTML=from+" ----- "+to;
         document.getElementById("total").innerHTML=total;
-        document.getElementById("goal").innerHTML="of "+goal+" coins goal";
+        document.getElementById("goal").innerHTML="of "+goal+" HTokens goal";
         document.getElementById("prgress-bar").style.width=ratio+"%";
         if(isOpen==false){
             if(!isWithdraw) $("#status").append("<div class=\"w3-button w3-wide w3-dark-grey w3-round-large\" style=\"width:100%\">WAIT FOR OPENNING</div>");
@@ -130,7 +131,6 @@ font-family: 'Handlee', cursive;
               else {
                 $("#status").append("<div class=\"w3-button w3-wide w3-dark-grey w3-round-large w3-center\" style=\"width:100%\">EXPIRED</div>");
                     if(!isWithdraw) $("#owner").append("<button class=\"w3-button w3-wide w3-pink w3-round-large w3-center\" style=\"width:100%\"id=\"donate\" onclick=\"withdrawNow()\">WITHDRAW COIN</button>");
-                    else $("#owner").append("<button class=\"w3-button w3-wide w3-pink w3-round-large w3-center\" style=\"width:100%\"id=\"donate\">DONE</button>");
               }
             }
         }
@@ -147,7 +147,7 @@ font-family: 'Handlee', cursive;
                for(i=0;i<result.length; i++){
                     contract.getDonationOf (result[i],function(error, res) {
                         if (!error) {
-                            $("#list").append(" <tr><td>"+res[0]+"</td><td>"+res[1]+"</td></tr>");
+                            $("#donators").append(" <tr><td>"+res[0]+"</td><td>"+res[1]+"</td></tr>");
                             console.log(res);
                         } else
                                 console.log(error);
@@ -166,7 +166,7 @@ font-family: 'Handlee', cursive;
                     donate_success.watch(function(error,res){
                         if(!error){
                             document.getElementById("total").innerHTML=res.args.total;
-                            document.getElementById("noti").innerHTML="Thank <i>\""+res.args._address+"\"</i> for donating "+res.args.amount+" coin(s). You "+res.args.message;
+                            document.getElementById("noti").innerHTML="Thank <i>\""+res.args._address+"\"</i> for donating "+res.args.amount+" token(s). You "+res.args.message;
                         }
                         else{
                         }
@@ -174,7 +174,7 @@ font-family: 'Handlee', cursive;
                         
                 }
                 else
-                    document.getElementById("noti").innerHTML="Failed to make transaction. Please check again your gasLimit or donation amount must greater than 0 coin(s).";
+                    document.getElementById("noti").innerHTML="Failed to make transaction. Please check again your gasLimit or donation amount must greater than 0 token.";
             }
         );
     }
@@ -202,6 +202,6 @@ font-family: 'Handlee', cursive;
 
 
 </script>
-<P>{{{item.address}}}</P>
+
 
 

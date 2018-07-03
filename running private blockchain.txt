@@ -73,6 +73,7 @@ eth.sendTransaction({from:eth.coinbase, to:"0x7B7287a77FC88451c1F4C88672246B28Fb
     address _admin=0xbe4890b564533705218c630d9a28ccd25b32a055; //address of admin contract
 
 ganache-cli -u 0
+ganache-cli -d --db /home/huy/Desktop/dataTest -i 12341 -u 0
 
 qua han donate 0xcd01fd0c34aa55826aaad947641b120a1e138899
 "IT01",1525192484,1525365284
@@ -96,4 +97,14 @@ eth.blockNumber
 sudo ntfsfix /dev/sda3
 
 
+FundToken
+"0xa0bce7ce8ce5f0dccdb3cc959bdf4a6c9eee40e7"
+Reward
+"0xdb2a26c095aa186fc941f6a875bb792c6b3f58f6"
+Happy
+"0xe55f396d432b6b2176dacdadc465278700b575c0"
+Admin
+"0x9386bde47ebb75fc6bd16c6d524b2c5fcfefd227"
+
 "0xa0bce7ce8ce5f0dccdb3cc959bdf4a6c9eee40e7","0xdb2a26c095aa186fc941f6a875bb792c6b3f58f6","0xe55f396d432b6b2176dacdadc465278700b575c0"
+

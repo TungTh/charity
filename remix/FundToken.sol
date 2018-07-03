@@ -53,7 +53,9 @@ contract FundToken is ERC20, SafeMath {
     }
     
     function useToken(address from,uint256 tokens) public returns(bool ok){
+        require(tokens>0);
         require(balances[from]>0);
+        require(balances[from]>tokens);
         balances[from] = safeSub(balances[from],tokens);
         return true;
     }

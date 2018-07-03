@@ -57,8 +57,11 @@ contract HappyToken is ERC20, SafeMath {
         totalSupply= safeAdd(totalSupply,tokens);
         return true;
     }
-     function useToken(address to,address _admin,uint256 tokens) public returns(bool ok){
-        balances[to] = safeSub(balances[to],tokens);
+     function useToken(address from,address _admin,uint256 tokens) public returns(bool ok){
+        require(tokens>0);
+        require(balances[from]>0);
+        require(balances[from]>tokens);
+        balances[from] = safeSub(balances[from],tokens);
         balances[_admin] = safeAdd(balances[_admin],tokens);
         return true;
     }

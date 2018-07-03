@@ -1,0 +1,191 @@
+<nav class="navbar navbar-expand-sm bg-danger navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item"><a class="nav-link" href="/">About Us</a></li>
+    <li class="nav-item "><a class="nav-link" href="/deploy">Start Your Own</a></li>
+    <li class="nav-item  active"><a class="nav-link" href="/List_fundraiser">Fundraisers</a></li>
+        <li class="nav-item "><a class="nav-link" href="/audit">Coin Sharing and Fundraiser Audit</a></li>
+
+  </ul>
+</nav>
+<link href="https://fonts.googleapis.com/css?family=Handlee|Pacifico" rel="stylesheet">
+<style>
+.w3-Handlee{
+font-family: 'Handlee', cursive;
+}
+#scrolltable { margin-top: 40px; height: 150px; overflow: auto; }
+#scrolltable th div { position: absolute; margin-top: -40px; }
+</style>
+<div class="w3-padding-large" style="margin-top:30px">
+
+        <h5><i><b><p id="name"></p></b></i></h5>
+        <p class="w3-wide w3-normal" id="date"></p>
+        <p><b>Address:</b> "{{address}}" </p>
+        <p class=" w3-normal" ><b>Total Donation:</b><a id="total"class="w3-normal" ></a></p>
+        <p class=" w3-normal" ><b>Owner Address:</b>"<a id="owner"class="w3-normal" ></a>"</p>
+        <p class=" w3-normal" ><b>Status:</b><a id="status"class="w3-normal" ></a></p>
+        {{!-- <p><b class="w3-left w3-normal"><p>Address: </p></b>  </p>
+        <p class="w3-left w3-normal" ><b>Owner Address:</b> "<div id="owner"  class="w3-left w3-normal" ></div>"</p><br>
+        <br> --}}
+        
+        <a class=" w3-large w3-wide ">List of Donators  </a><a href="#" onclick="refresh()"><span class="glyphicon glyphicon-refresh"></span></a>
+        <div id="scrolltable">
+    <table class="w3-table w3-striped w3-bordered"id="donators">
+        <tr><th><div>Address</div></th><th><div>Amount</div></th></tr>
+
+    </table>
+</div><br><br>
+        
+       
+        <a class=" w3-large w3-wide">List of Transactions  </a><a href="#" onclick="refresh()"><span class="glyphicon glyphicon-refresh"></span></a>
+        <div id="scrolltable">
+    <table class="w3-table w3-striped w3-bordered"id="transaction">
+        <tr><th><div>Transaction Hash</div></th></tr>
+
+    </table>
+</div>
+
+      
+
+
+
+  
+        <p  class="w3-wide w3-normal w3-center"><B>VIEW TRANSACTION DETAILS</B></p>
+        <p ><input id="transaction_address" class="w3-input w3-border" ></p>
+        <p style="height:37.81px;"><button  type="button" class=" w3-right w3-button w3-red w3-round-large" onclick="view()" id="deploy">View</button></p>
+        <div class="w3-left">
+         <p id="view_transaction"></p>
+         <p id="view_reciept">
+             </div>
+         </p>
+      <ul class="nav nav-pills flex-column">
+      <hr class="d-sm-none">
+  
+</div>
+
+
+
+{{!-- setTimeout(location.reload(), 10000); --}}
+
+{{!-- <p id="total"></p> --}}
+
+<script src="/javascripts/FundraiserABI.js"></script>
+<script>
+  
+
+  var address ="{{address}}";
+  var contract = fundraiserContract.at(address);
+ //Onload functions...........................................................................................................................................................................................     
+    web3.eth.getBlockNumber(function(error, result) {
+           if (!error) {
+             for(var i = 1;i<=result;i++){
+               web3.eth.getBlock(i,function(error, block) {
+                          if (!error) {
+                            transactions=block.transactions
+                            for(var j=0;j<transactions.length;j++){
+                              web3.eth.getTransaction(transactions[j],function(error, transaction) {
+                                  if (!error) {
+                                    if(transaction.to=="{{address}}")  $("#transaction").append(" <tr><td class=\"w3-left w3-small\">"+transaction.hash+"</td></tr>");
+
+                                  } else
+                                        console.log(error);
+                              });
+                            }
+                          } else
+                                console.log(error);
+                      });
+             }
+           } else
+                console.log(error);
+       });
+  contract.getInfo(function(error, result) {
+    if (!error) {
+        var owner = result[0];
+        var total = result[1];
+        var goal = result[2];
+        var ratio = (total/goal)*100;
+        var  months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var start = new Date(result[3]*1000);
+        var end = new Date(result[4]*1000);
+        var isOpen=result[5];
+        var isEarly = result[6];
+        var isWithdraw = result[7];
+        var isActive=result[8];
+        var name=result[9];
+        document.getElementById("name").innerHTML=name;
+        document.getElementById("owner").innerHTML=" "+ owner;
+        var from=start.getDate()+" "+months[start.getMonth()]+", "+start.getFullYear();
+        var to=end.getDate()+" "+months[end.getMonth()]+", "+end.getFullYear();
+        document.getElementById("date").innerHTML=from+" ----- "+to;
+        document.getElementById("total").innerHTML=" "+total+" HTokens";
+        if(isOpen==false){
+            if(!isWithdraw) document.getElementById("status").innerHTML=" Waiting for opening";
+            else document.getElementById("status").innerHTML=" Withdrawn";
+        } 
+        else {
+            if(isEarly==true) document.getElementById("status").innerHTML=" Coming soon";
+
+            else{
+                
+              if(isActive==true) document.getElementById("status").innerHTML=" Activating"; 
+
+              else document.getElementById("status").innerHTML=" Expired and waiting for withdrawing";
+            }
+        }
+
+       
+    } else
+        console.log(error);
+    });
+
+ contract.getDonators(function(error, result) {
+           if (!error) {
+               var i;
+               text="";
+               for(i=0;i<result.length; i++){
+                  
+                    contract.getDonationOf (result[i],function(error, res) {
+                        if (!error) {
+                             $("#donators").append("<tr><td>"+res[0]+"</td><td>"+res[1]+"</td></tr>");
+                            console.log(res);
+                        } else
+                                console.log(error);
+                    });
+               }
+           } else
+                console.log(error);
+       });
+
+    function refresh(){
+        location.reload();
+    }
+    function view(){
+            var transaction = $("#transaction_address").val();
+
+            var info = web3.eth.getTransaction(transaction,function(error, result) {
+           if (!error) {
+               var decodedData = JSON.stringify(abiDecoder.decodeMethod(result.input), null, '\t');
+                
+               var display = "<p class=\"w3-wide w3-large\"><b>Transaciton details</b></p>"+"<p><b>Hash:  </b>"+result.hash+"</p>"+"<p><b>Nounce: </b>"+result.nounce+"</p>"+"<p><b>blockHash: </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>value: </b>"+result.value+"</p>"+"<p><b>gasPrice: </b>"+result.gasPrice+"</p>"+"<p><b>input: </b>"+decodedData+"</p>"
+               document.getElementById("view_transaction").innerHTML=display
+             console.log(result.gas)
+           } else
+                console.log(error);
+       });
+
+       var info = web3.eth.getTransactionReceipt(transaction,function(error, result) {
+           if (!error) {
+               var display = "<br><p class=\"w3-wide w3-large\"><b>Transaciton Receipt</b></p>"+"<p><b>blockHash:  </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionHash: </b>"+result.transactionHash+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>cumulativeGasUsed: </b>"+result.cumulativeGasUsed+"</p>"+"<p><b>gasUsed: </b>"+result.gasUsed+"</p>"+"<p><b>contractAddress: </b>"+result.contractAddress+"</p>"+"<p><b>status('0x0'- failure , '0x1'- succeeded): </b>"+result.status+"</p>"
+                document.getElementById("view_reciept").innerHTML=display
+
+             console.log(result)
+           } else
+                console.log(error);
+       });
+
+    }
+
+
+</script>
+
+
+
