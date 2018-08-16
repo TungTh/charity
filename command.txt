@@ -1,0 +1,20 @@
+
+geth --datadir "Desktop/data/01" --port 30301 --nodiscover --networkid 12342 --rpc --rpcport 8001 --rpccorsdomain "*" --rpcapi="db,eth,net,web3,personal,web3" --ipcpath "/home/huy/.ethereum/geth.ipc" --verbosity 0 console
+geth attach /home/huy/.ethereum/geth.ipc
+
+--datadir "Desktop/data/02" 
+--port 30302            // Network listening port
+--nodiscover            //Disables the peer discovery mechanism (manual peer addition).
+--networkid 12342       // Network identifier (which is the chainId in your genesis file)
+--rpc                   // Enable the HTTP-RPC server.
+--rpcport 8545          // HTTP-RPC server listening port (default: 8001)
+--rpccorsdomain "* "    // 
+--rpcapi="db,eth,net,web3,personal,web3"  //API's offered over the HTTP-RPC interface
+--verbosity 0 
+
+ganache-cli -u 0
+
+personal.newAccount();
+personal.unlockAccount(eth.coinbase,"123456",0)
+
+remixd -s Desktop/charity-project/remix

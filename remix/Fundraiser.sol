@@ -9,15 +9,16 @@ import "./admin.sol";
 
 contract Fundraiser is SafeMath {
 //Fund Information____________________________________________________________________________
-    string public name;
-    address public owner;
+    string private name;
+    address private destination;
+    address private owner;
     uint256 public total=10;
-    uint256 public goal;
-    uint256 public start;
-    uint256 public end;
+    uint256 private goal;
+    uint256 private start;
+    uint256 private end;
     bool public withdraw;
     bool public open;
-    address[] public donator;
+    address[] private donator;
     mapping (address => uint256) donationOf;
     FundToken FToken;
     HappyToken HToken;
@@ -74,6 +75,7 @@ contract Fundraiser is SafeMath {
 
     function Fundraiser(string _name,address _admin,uint256 _goal,uint256 _start, uint256 _end){
         owner=msg.sender;
+        destination=msg.sender;
         admin = _admin;
         name=_name;
         goal=_goal;
@@ -87,10 +89,21 @@ contract Fundraiser is SafeMath {
         require(open);
         require(!withdraw);
         require(msg.sender==owner);
-        HToken.investToken(owner,total);
+        HToken.investToken(destination,total);
         withdraw=true;
         open = false;
         return true;
+    }
+    function setDestination(address _destination) returns(bool res) {
+        require(msg.sender==owner);
+        destination=_destination;
+        return true;
+    }
+    function isOwner() public view returns(bool res) {
+        return msg.sender==owner;
+    }
+    function getDestination() public view returns(address result) {
+        return destination;
     }
 //............................................................................................    
 
@@ -114,12 +127,15 @@ contract Fundraiser is SafeMath {
         FToken.useToken(msg.sender,_value);
 
         if(!isIn(msg.sender)){
-            RToken.rewarding(msg.sender);
+            RToken.rewarding(msg.sender,_value);
             donator.push(msg.sender)-1;
             Notification(msg.sender,_value,"recieved rewarded coin",total);
         } 
-        else 
-            Notification(msg.sender,_value,"are already rewarded",total);
+        else{
+            RToken.rewarding(msg.sender,_value);
+            Notification(msg.sender,_value,"recieved rewarded coin",total);
+        } 
+            
         donationOf[msg.sender]=safeAdd(donationOf[msg.sender],_value);
         return true;
     }
