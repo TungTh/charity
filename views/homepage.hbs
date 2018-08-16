@@ -7,5 +7,49 @@
 
   </ul>
   </nav>
+  <style>
+    .register-form {text-align: left; margin: 5%;margin-top:auto; width: 90%; padding: 5px;}
+</style>
 <h1 class="w3-wide w3-center" >Welcome to Charity Funding Social Page</h1>
+<script src="/javascripts/FundraiserABI.js"></script>
+
+<div class="w3-container w3-content w3-padding-54" style="max-width:800px" id="contact">
+        <h3 class="w3-wide w3-center">READ ME !</h3>
+        <p class="w3-center">Please Install <b><a href="https://metamask.io/" target="_blank">METAMASK</a></b> add-on before starting your Fundraisers !</p>
+        
+
+        <div class="w3-row w3-padding-32">
+        </div>
+      </div>
+
+      <div class="w3-container w3-content w3-padding-54" style="max-width:800px" id="contact">
+        <h3 class="w3-wide w3-center">Token(s)</h3>
+        <p class="w3-center">Please add those addresses to enable see token(s) in your Ethereum Account </p>
+        <p class="w3-center"><b>FundToken(FToken):</b><a id="FT"></a> </p>
+        <p class="w3-center"><b>HappyToken(HToken):</b><a id="HT"></a> </p>
+        <p class="w3-center"><b>RewardToken(RToken):</b><a id="RT"></a> </p>
+        <script>
+          document.getElementById("FT").innerHTML=" \""+_fund+"\""
+          document.getElementById("HT").innerHTML="\""+_happy+"\""
+          document.getElementById("RT").innerHTML="\""+_reward+"\""
+
+        </script>
+        <div class="w3-row w3-padding-32">
+        </div>
+      </div>
+
+
+      <div class="w3-container w3-content w3-padding-54" style="max-width:800px" id="contact">
+        <h3 class="w3-wide w3-center">HANDLE YOUR TRANSACTION FEE !</h3>
+        <p>Each time you start a new Fundraiser, a transaction is triggered and you must pay for the <b>transaction fee (in ether).</b></p>
+        <p>You must initialize:</p>
+        <p><b>Gas Limit:</b> The initial amout of gas that the transactions might need.</p>
+        <p><b>Gas Price:</b> The amount of Ether that you are willing to pay per gas unit.</p>
+        <p>If the transaction costs less than <b>Gas Limit</b>, you will be refunded the amount of <b>( Gas Limit - Gas used) x Gas Price (ether).</b></p>
+        <p>If you set the <b>Gas Limit</b> too low, then the transactions runs out of gas and you will pay the transaction fee <b>(Gas Limit) x Gas Price.</b></p>
+        <p>The appropriate <b>Gas Limit</b> with a high <b>Gas Price</b> will let your Transaction has more chances to be confirmed ! </p>
+        <h3 class="w3-wide w3-center">Be wise !</h3>
+        <div class="w3-row w3-padding-32">
+        </div>
+      </div>
 

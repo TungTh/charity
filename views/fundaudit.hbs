@@ -165,7 +165,7 @@ font-family: 'Handlee', cursive;
            if (!error) {
                var decodedData = JSON.stringify(abiDecoder.decodeMethod(result.input), null, '\t');
                 
-               var display = "<p class=\"w3-wide w3-large\"><b>Transaciton details</b></p>"+"<p><b>Hash:  </b>"+result.hash+"</p>"+"<p><b>Nounce: </b>"+result.nounce+"</p>"+"<p><b>blockHash: </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>value: </b>"+result.value+"</p>"+"<p><b>gasPrice: </b>"+result.gasPrice+"</p>"+"<p><b>input: </b>"+decodedData+"</p>"
+               var display = "<p class=\"w3-wide w3-large\"><b>Transaction details</b></p>"+"<p><b>Hash:  </b>"+result.hash+"</p>"+"<p><b>Nonce: </b>"+result.nonce+"</p>"+"<p><b>blockHash: </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>value: </b>"+result.value+"</p>"+"<p><b>gasPrice: </b>"+result.gasPrice+"</p>"+"<p><b>input: </b>"+decodedData+"</p>"
                document.getElementById("view_transaction").innerHTML=display
              console.log(result.gas)
            } else
@@ -174,7 +174,7 @@ font-family: 'Handlee', cursive;
 
        var info = web3.eth.getTransactionReceipt(transaction,function(error, result) {
            if (!error) {
-               var display = "<br><p class=\"w3-wide w3-large\"><b>Transaciton Receipt</b></p>"+"<p><b>blockHash:  </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionHash: </b>"+result.transactionHash+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>cumulativeGasUsed: </b>"+result.cumulativeGasUsed+"</p>"+"<p><b>gasUsed: </b>"+result.gasUsed+"</p>"+"<p><b>contractAddress: </b>"+result.contractAddress+"</p>"+"<p><b>status('0x0'- failure , '0x1'- succeeded): </b>"+result.status+"</p>"
+               var display = "<br><p class=\"w3-wide w3-large\"><b>Transaction Receipt</b></p>"+"<p><b>blockHash:  </b>"+result.blockHash+"</p>"+"<p><b>blockNumber: </b>"+result.blockNumber+"</p>"+"<p><b>transactionHash: </b>"+result.transactionHash+"</p>"+"<p><b>transactionIndex: </b>"+result.transactionIndex+"</p>"+"<p><b>from: </b>"+result.from+"</p>"+"<p><b>to: </b>"+result.to+"</p>"+"<p><b>cumulativeGasUsed: </b>"+result.cumulativeGasUsed+"</p>"+"<p><b>gasUsed: </b>"+result.gasUsed+"</p>"+"<p><b>contractAddress: </b>"+result.contractAddress+"</p>"+"<p><b>status('0x0'- failure , '0x1'- succeeded): </b>"+result.status+"</p>"
                 document.getElementById("view_reciept").innerHTML=display
 
              console.log(result)

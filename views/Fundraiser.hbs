@@ -48,9 +48,14 @@ font-family: 'Handlee', cursive;
     <i class="w3-opacity w3-left w3-small" id="fowner"></i><br><br>
       <p id="count"></p>
       <p id="owner"></p>
-    <p class="w3-Handlee">Share your love and get 10 <b>RTokens</b> as a gift ! (only one time)  </p>
+    <p class="w3-Handlee">Share your love and get <b>RTokens</b> as a gift ! </p>
       <ul class="nav nav-pills flex-column">
       <hr class="d-sm-none">
+    <p><div class="w3-button w3-wide w3-pink w3-round-large" style="width:100%" onclick="isOwner()">Onwer Funds Management</div></p>
+    <p id="permission">
+
+    </p>
+
     </div>
   </div>
 </div>
@@ -180,12 +185,11 @@ font-family: 'Handlee', cursive;
     }
 
 
-   
 
     function withdrawNow(){
         contract.ownerWidthdraw(function(error, result) {
            if (!error) {
-               if(result) document.getElementById("noti").innerHTML="Fundraiser closed."
+               if(result) document.getElementById("noti").innerHTML="Withdrawn successfully ! Fundraiser closed."
                 else  document.getElementById("noti").innerHTML="You are not the owner of this Fundraiser."
 
            } else document.getElementById("noti").innerHTML="Failed to make transaction."
@@ -193,8 +197,49 @@ font-family: 'Handlee', cursive;
             
        });
     }
+    function setDestination(){
+        var to=$('#change').val();
+        contract.setDestination(to,function(error,result){
+            if(!error){
+               if(result){
+                   document.getElementById("change_stt").innerHTML="Successfully !"
+               }
+               else {
+                   document.getElementById("change_stt").innerHTML="Failed"
+               } 
+            }
+            else {
+                document.getElementById("change_stt").innerHTML="There is something wrong with your transaction ! Please input a valid address and use the Fundraiser owner address to do the transaction !"
+                console.log(error)
+            }
+        });
+    }
 
-    
+    function isOwner(){
+        contract.isOwner(function(error,result){
+            if(!error){
+               if(result){
+                   contract.getDestination(function(error,result){
+                       if(!error){
+                           $("#permission").empty()
+                           $("#permission").append("<p class=\"w3-small\">Current Destination Wallet<br><i>\""+result+"\"</i><br><b>Destination wallet address</b> is where the funds transfered to when the fundraiser is expired. If you want to change the address, please input new address into the field below (input address without \" \")</p> <input id=\"change\" class=\"w3-input w3-border\" type=\"text\" ></input><p id=\"change_stt\"></p><button class=\"w3-button w3-wide w3-pink w3-round-large w3-center w3-small\" style=\"width:50%\"id=\"donate\" onclick=\"setDestination()\">CHANGE</button>");
+
+                       }
+                       else console.log(error)
+                   }
+
+                   );
+                   
+                   
+               }
+               else {
+                    $("#permission").empty()
+                   $("#permission").append("<p class=\"w3-small\">You are not the Fundraiser owner! </p> ");
+               }
+            }
+            else console.log(error);
+        });
+    }
 
     function refresh(){
         location.reload();

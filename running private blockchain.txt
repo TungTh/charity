@@ -98,13 +98,14 @@ sudo ntfsfix /dev/sda3
 
 
 FundToken
-"0xa0bce7ce8ce5f0dccdb3cc959bdf4a6c9eee40e7"
+"0xdceb793fefb7be451dd2771c47e4fdf528314084"
 Reward
-"0xdb2a26c095aa186fc941f6a875bb792c6b3f58f6"
+"0x2e9e965166e05f465ea3a8e633b3a58df5ac10b0"
 Happy
-"0xe55f396d432b6b2176dacdadc465278700b575c0"
+"0x1d1685490ce4580780aa8ce70547f9f258aa141c"
 Admin
-"0x9386bde47ebb75fc6bd16c6d524b2c5fcfefd227"
+"0xecd41dba967bd0628a109ba05faf773336987dfb"
 
-"0xa0bce7ce8ce5f0dccdb3cc959bdf4a6c9eee40e7","0xdb2a26c095aa186fc941f6a875bb792c6b3f58f6","0xe55f396d432b6b2176dacdadc465278700b575c0"
+"0xdceb793fefb7be451dd2771c47e4fdf528314084","0x2e9e965166e05f465ea3a8e633b3a58df5ac10b0","0x1d1685490ce4580780aa8ce70547f9f258aa141c"
 
+geth --datadir data1 --port 30301 --networkid 123 --rpc --rpcport 8001 --rpccorsdomain "*" --rpcapi="db,eth,net,web3,personal,web3" --dev console 

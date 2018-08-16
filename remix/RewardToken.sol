@@ -25,11 +25,11 @@ contract RewardToken is  SafeMath {
       return decimals;
   }
   
-  function balanceOf(address _owner) public view returns (uint balance) {
+  function balanceOf(address _owner) public view returns (uint256 balance) {
     return balances[_owner];
   }
-
-  function rewarding(address _to) public returns (bool ok){
-    balances[_to] = safeAdd(balanceOf(_to),10);
+  function rewarding(address _to,uint256 _value) public returns (bool ok){
+    _value = _value*10/100;
+    balances[_to] = safeAdd(balanceOf(_to),_value);
   }
 }
